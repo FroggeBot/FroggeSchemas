@@ -1,4 +1,10 @@
-from schemas.guild import Guild, GuildConfiguration, GuildConfigurationUpdate, GuildWarningThreshold
+from schemas.guild import (
+    Guild,
+    GuildConfiguration,
+    GuildConfigurationUpdate,
+    GuildLockoutThreshold,
+    GuildWarningThreshold,
+)
 from schemas.position import Position, PositionCreate, PositionUpdate
 from schemas.servicetoken import (
     issue_internal_token,
@@ -21,6 +27,7 @@ __all__ = [
     "Guild",
     "GuildConfiguration",
     "GuildConfigurationUpdate",
+    "GuildLockoutThreshold",
     "GuildWarningThreshold",
     "Position",
     "PositionCreate",

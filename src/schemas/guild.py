@@ -22,6 +22,7 @@ class GuildConfiguration(BaseSchema):
     log_channel_id: int | None = None
     accent_color: int = 0x2F6B4F
     vip_warning_threshold_days: int | None = Field(default=3, ge=1)
+    event_lockout_minutes: int | None = Field(default=None, ge=1)
 
     @field_validator("timezone")
     @classmethod
@@ -33,6 +34,7 @@ class GuildConfigurationUpdate(BaseSchema):
     log_channel_id: int | None = None
     accent_color: int | None = None
     vip_warning_threshold_days: int | None = Field(default=None, ge=1)
+    event_lockout_minutes: int | None = Field(default=None, ge=1)
 
     @field_validator("timezone")
     @classmethod
@@ -48,3 +50,7 @@ class Guild(BaseSchema):
 class GuildWarningThreshold(BaseSchema):
     guild_id: int
     vip_warning_threshold_days: int | None
+
+class GuildLockoutThreshold(BaseSchema):
+    guild_id: int
+    event_lockout_minutes: int | None

@@ -1,15 +1,19 @@
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import UTC, datetime, timedelta
 
 from pydantic import Field
 
 from .base import BaseSchema, IDSchema
+from .enums import ElementType
 from .position import Position
 
 __all__ = [
     "Event",
     "EventCreate",
+    "EventElement",
+    "EventElementCreate",
+    "EventElementUpdate",
     "EventPosition",
     "EventPositionCreate",
     "EventPost",
@@ -20,6 +24,7 @@ __all__ = [
     "EventSignup",
     "EventSignupCreate",
     "EventUpdate",
+    "is_shift_locked",
 ]
 
 
@@ -67,6 +72,7 @@ class EventShift(IDSchema):
     start_at: datetime
     end_at: datetime
     capacity: int = Field(default=1, ge=1)
+    reminder_sent: bool = False
     signups: list[EventSignup] = []
 
 
@@ -95,6 +101,24 @@ class EventPositionCreate(BaseSchema):
     position_id: int
 
 
+# --- Event Elements ---
+class EventElement(IDSchema):
+    guild_id: int
+    event_id: int
+    element_type: ElementType
+    title: str | None = None
+    value: str | None = None
+
+
+class EventElementCreate(BaseSchema):
+    element_type: ElementType
+
+
+class EventElementUpdate(BaseSchema):
+    title: str | None = None
+    value: str | None = None
+
+
 # --- Event Posts ---
 class EventPost(IDSchema):
     guild_id: int
@@ -107,3 +131,13 @@ class EventPostCreate(BaseSchema):
     event_id: int
     channel_id: int
     message_id: int
+
+
+# --- Lockout ---
+def is_shift_locked(start_at: datetime, lockout_minutes: int | None, *, now: datetime | None = None) -> bool:
+    """Whether self-service signups are locked for a shift starting at `start_at`, given the
+    guild's configured `event_lockout_minutes` (None = lockout disabled). Shared by the API
+    (the actual enforcement) and the Bot (UI-only disabled state) so they can never disagree."""
+    if lockout_minutes is None:
+        return False
+    return (now or datetime.now(UTC)) >= start_at - timedelta(minutes=lockout_minutes)

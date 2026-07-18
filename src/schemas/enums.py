@@ -54,3 +54,15 @@ class VIPMessageTemplateType(FroggeEnum):
     Welcome = auto()
     Warning = auto()
     Expiry = auto()
+
+
+class ElementType(FroggeEnum):
+    Address = auto()
+    Theme = auto()
+    Syncshell = auto()
+    PartyFinder = auto()
+    ShoutRun = auto()
+    Greeting = auto()
+    VenueShout = auto()
+    DJInfo = auto()
+    Miscellaneous = auto()
