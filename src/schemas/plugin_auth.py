@@ -9,6 +9,7 @@ class PluginPairingCodeCreate(BaseSchema):
     discord_user_id: int
     discord_username: str | None = None
     member_guild_ids: list[int] = []
+    manager_guild_ids: list[int] = []
 
 class PluginPairingCodeIssued(BaseSchema):
     code: str

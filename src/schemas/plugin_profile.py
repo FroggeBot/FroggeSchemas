@@ -44,3 +44,6 @@ class PluginProfileDetail(BaseSchema):
     personality: str | None = None
     about_me: str | None = None
     additional_images: list[PluginProfileImage] = []
+
+class PluginProfileRejectRequest(BaseSchema):
+    reason: str

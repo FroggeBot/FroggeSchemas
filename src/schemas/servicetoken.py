@@ -43,6 +43,29 @@ def verify_internal_token(token: str, *, secret: str) -> bool:
     expected = hmac.new(secret.encode(), marker.encode(), hashlib.sha256).hexdigest()
     return hmac.compare_digest(expected, signature)
 
+def issue_member_token(guild_id: int, discord_user_id: int, *, secret: str) -> str:
+    """Issues a token proving a caller acts on behalf of a specific Discord member within a
+    specific guild - the member-scoped counterpart to issue_service_token's guild-scoped one."""
+    payload = f"{guild_id}:{discord_user_id}"
+    signature = hmac.new(secret.encode(), payload.encode(), hashlib.sha256).hexdigest()
+    return f"{payload}.{signature}"
+
+def verify_member_token(token: str, *, secret: str) -> tuple[int, int] | None:
+    """Verifies the provided member token using the given secret, returning (guild_id, discord_user_id)."""
+    try:
+        payload, signature = token.split(".", 1)
+        guild_id_part, discord_user_id_part = payload.split(":", 1)
+        guild_id = int(guild_id_part)
+        discord_user_id = int(discord_user_id_part)
+    except ValueError:
+        return None
+
+    expected = hmac.new(secret.encode(), payload.encode(), hashlib.sha256).hexdigest()
+    if not hmac.compare_digest(expected, signature):
+        return None
+
+    return guild_id, discord_user_id
+
 def issue_plugin_token(token_id: str, *, secret: str) -> str:
     """Signs a plugin token_id. Unlike the other schemes, token_id is random, not deterministic,
     so the signed token alone isn't revocable - callers must track token_id server-side and check

@@ -6,6 +6,7 @@ from .base import BaseSchema, IDSchema
 from .enums import ApprovalStatus, Clan, DataCenter, Gender, Orientation, Race
 
 __all__ = [
+    "MemberProfileCharacterCreate",
     "ProfileAdditionalImage",
     "ProfileAdditionalImageCreate",
     "ProfileAdditionalImageUpdate",
@@ -64,6 +65,13 @@ class ProfileCharacter(IDSchema):
 
 class ProfileCharacterCreate(BaseSchema):
     discord_user_id: int
+    character_name: str
+
+
+class MemberProfileCharacterCreate(BaseSchema):
+    """Create payload for the member-scoped router - discord_user_id comes from the caller's
+    verified member token, never from the request body."""
+
     character_name: str
 
 

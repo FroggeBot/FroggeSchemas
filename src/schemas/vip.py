@@ -180,6 +180,8 @@ class VIPMessageTemplate(BaseSchema):
     title: str | None = None
     description: str | None = None
     is_active: bool = True
+    default_title: str = ""
+    default_description: str = ""
 
 
 class VIPMessageTemplateUpdate(BaseSchema):

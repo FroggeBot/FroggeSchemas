@@ -6,3 +6,4 @@ from .base import BaseSchema
 class PluginGuild(BaseSchema):
     guild_id: int
     guild_name: str
+    is_manager: bool

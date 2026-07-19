@@ -176,6 +176,20 @@ class ApprovalStatus(FroggeEnum):
     Rejected = auto()
 
 
+class ReactionRoleMessageType(FroggeEnum):
+    Normal = auto()
+    Unique = auto()
+    Verify = auto()
+
+    @property
+    def description(self) -> str:
+        return {
+            ReactionRoleMessageType.Normal: "Clicking a role button toggles that role on or off.",
+            ReactionRoleMessageType.Unique: "Clicking clears any other role from this panel first.",
+            ReactionRoleMessageType.Verify: "Clicking adds the role; only an admin can remove it.",
+        }[self]
+
+
 class CardRarity(FroggeEnum):
     Common = auto()
     Uncommon = auto()

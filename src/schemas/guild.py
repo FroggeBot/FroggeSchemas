@@ -57,11 +57,22 @@ class GuildConfigurationUpdate(BaseSchema):
     def _validate_timezone(cls, value: str | None) -> str | None:
         return _check_timezone(value) if value is not None else None
 
+class GuildSubscription(BaseSchema):
+    guild_id: int
+    tier: str = "free"
+    status: str = "active"
+    renewed_at: datetime | None = None
+    expires_at: datetime | None = None
+    discord_subscription_id: str | None = None
+    granted_by: int | None = None
+    note: str | None = None
+
 class Guild(BaseSchema):
     guild_id: int
     name: str
     created_at: datetime
     configuration: GuildConfiguration
+    subscription: GuildSubscription
 
 class GuildWarningThreshold(BaseSchema):
     guild_id: int
