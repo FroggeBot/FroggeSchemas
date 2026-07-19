@@ -31,6 +31,9 @@ __all__ = [
     "VIPTier",
     "VIPTierCreate",
     "VIPTierUpdate",
+    "PendingVipRoleSync",
+    "PendingVipRoleSyncCreate",
+    "VipRoleSyncFailure",
     "render_vip_message_template",
 ]
 
@@ -98,6 +101,29 @@ class VIPMembership(IDSchema):
 
 class VIPMembershipMarkSentUpdate(BaseSchema):
     field: Literal["warn_sent", "expire_sent"]
+
+
+# --- VIP Role Sync (Worker-reconciled outbox for role grants/revokes) ---
+class PendingVipRoleSyncCreate(BaseSchema):
+    discord_user_id: int
+    role_id: int
+    action: Literal["grant", "revoke"]
+    reason: str
+
+
+class PendingVipRoleSync(IDSchema):
+    guild_id: int
+    discord_user_id: int
+    role_id: int
+    action: Literal["grant", "revoke"]
+    reason: str
+    created_at: datetime
+    attempts: int
+    last_error: str | None = None
+
+
+class VipRoleSyncFailure(BaseSchema):
+    error: str
 
 
 # --- VIP Perks ---

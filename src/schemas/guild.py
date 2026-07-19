@@ -24,6 +24,10 @@ class GuildConfiguration(BaseSchema):
     vip_warning_threshold_days: int | None = Field(default=3, ge=1)
     event_lockout_minutes: int | None = Field(default=None, ge=1)
     profile_approval_required: bool = True
+    verified_role_id: int | None = None
+    require_lodestone_proof: bool = True
+    require_captcha: bool = True
+    change_name: bool = True
 
     @field_validator("timezone")
     @classmethod
@@ -37,6 +41,10 @@ class GuildConfigurationUpdate(BaseSchema):
     vip_warning_threshold_days: int | None = Field(default=None, ge=1)
     event_lockout_minutes: int | None = Field(default=None, ge=1)
     profile_approval_required: bool | None = None
+    verified_role_id: int | None = None
+    require_lodestone_proof: bool | None = None
+    require_captcha: bool | None = None
+    change_name: bool | None = None
 
     @field_validator("timezone")
     @classmethod
