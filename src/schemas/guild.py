@@ -30,6 +30,7 @@ class GuildConfiguration(BaseSchema):
     change_name: bool = True
     staff_role_id: int | None = None
     require_staffing_qualification: bool = False
+    card_game_enabled: bool = False
 
     @field_validator("timezone")
     @classmethod
@@ -49,17 +50,29 @@ class GuildConfigurationUpdate(BaseSchema):
     change_name: bool | None = None
     staff_role_id: int | None = None
     require_staffing_qualification: bool | None = None
+    card_game_enabled: bool | None = None
 
     @field_validator("timezone")
     @classmethod
     def _validate_timezone(cls, value: str | None) -> str | None:
         return _check_timezone(value) if value is not None else None
 
+class GuildSubscription(BaseSchema):
+    guild_id: int
+    tier: str = "free"
+    status: str = "active"
+    renewed_at: datetime | None = None
+    expires_at: datetime | None = None
+    discord_subscription_id: str | None = None
+    granted_by: int | None = None
+    note: str | None = None
+
 class Guild(BaseSchema):
     guild_id: int
     name: str
     created_at: datetime
     configuration: GuildConfiguration
+    subscription: GuildSubscription
 
 class GuildWarningThreshold(BaseSchema):
     guild_id: int

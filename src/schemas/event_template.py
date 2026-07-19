@@ -5,7 +5,6 @@ from datetime import datetime
 from pydantic import Field
 
 from .base import BaseSchema, IDSchema
-from .enums import ElementType
 from .event import Event
 
 __all__ = [
@@ -14,9 +13,6 @@ __all__ = [
     "EventTemplateApplyResult",
     "EventTemplateCreate",
     "EventTemplateData",
-    "EventTemplateElement",
-    "EventTemplateElementCreate",
-    "EventTemplateElementUpdate",
     "EventTemplatePosition",
     "EventTemplatePositionCreate",
     "EventTemplateShift",
@@ -59,30 +55,13 @@ class EventTemplatePositionCreate(BaseSchema):
     position_id: int
 
 
-# --- Event Template Elements (blob entries) ---
-class EventTemplateElement(BaseSchema):
-    key: int
-    element_type: ElementType
-    title: str | None = None
-    value: str | None = None
-
-
-class EventTemplateElementCreate(BaseSchema):
-    element_type: ElementType
-
-
-class EventTemplateElementUpdate(BaseSchema):
-    title: str | None = None
-    value: str | None = None
-
-
 # --- Event Templates ---
 class EventTemplateData(BaseSchema):
     description: str | None = None
+    address: str | None = None
     image_url: str | None = None
     duration_minutes: int | None = None
     positions: list[EventTemplatePosition] = []
-    elements: list[EventTemplateElement] = []
 
 
 class EventTemplate(IDSchema):
@@ -99,6 +78,7 @@ class EventTemplateCreate(BaseSchema):
 class EventTemplateUpdate(BaseSchema):
     name: str | None = None
     description: str | None = None
+    address: str | None = None
     image_url: str | None = None
 
 
