@@ -28,6 +28,8 @@ class GuildConfiguration(BaseSchema):
     require_lodestone_proof: bool = True
     require_captcha: bool = True
     change_name: bool = True
+    staff_role_id: int | None = None
+    require_staffing_qualification: bool = False
 
     @field_validator("timezone")
     @classmethod
@@ -45,6 +47,8 @@ class GuildConfigurationUpdate(BaseSchema):
     require_lodestone_proof: bool | None = None
     require_captcha: bool | None = None
     change_name: bool | None = None
+    staff_role_id: int | None = None
+    require_staffing_qualification: bool | None = None
 
     @field_validator("timezone")
     @classmethod

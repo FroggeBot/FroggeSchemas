@@ -7,6 +7,7 @@ class Position(IDSchema):
     guild_id: int
     name: str
     color: int | None = None
+    role_id: int | None = None
 
 class PositionCreate(BaseSchema):
     name: str
@@ -15,3 +16,4 @@ class PositionCreate(BaseSchema):
 class PositionUpdate(BaseSchema):
     name: str | None = None
     color: int | None = None
+    role_id: int | None = None
