@@ -35,6 +35,7 @@ class StaffMember(IDSchema):
     birthday: str | None = None  # "MM-DD", no year — matches v6, a birthday not a DOB
     notes: str | None = None  # admin-only, mirrors VIPMember.notes
     is_terminated: bool  # computed server-side: no employment period currently open
+    terminated_at: datetime | None = None  # computed server-side: most recent period's ended_at
     positions: list[Position] = []  # qualifications, nested to avoid N+1 on the detail screen
 
     @field_validator("birthday")
