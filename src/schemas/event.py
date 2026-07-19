@@ -5,15 +5,11 @@ from datetime import UTC, datetime, timedelta
 from pydantic import Field
 
 from .base import BaseSchema, IDSchema
-from .enums import ElementType
 from .position import Position
 
 __all__ = [
     "Event",
     "EventCreate",
-    "EventElement",
-    "EventElementCreate",
-    "EventElementUpdate",
     "EventPosition",
     "EventPositionCreate",
     "EventPost",
@@ -33,6 +29,7 @@ class Event(IDSchema):
     guild_id: int
     name: str
     description: str | None = None
+    address: str | None = None
     start_at: datetime
     end_at: datetime | None = None
     image_url: str | None = None
@@ -41,6 +38,7 @@ class Event(IDSchema):
 class EventCreate(BaseSchema):
     name: str
     description: str | None = None
+    address: str | None = None
     start_at: datetime
     end_at: datetime | None = None
     image_url: str | None = None
@@ -49,6 +47,7 @@ class EventCreate(BaseSchema):
 class EventUpdate(BaseSchema):
     name: str | None = None
     description: str | None = None
+    address: str | None = None
     start_at: datetime | None = None
     end_at: datetime | None = None
     image_url: str | None = None
@@ -99,24 +98,6 @@ class EventPosition(IDSchema):
 
 class EventPositionCreate(BaseSchema):
     position_id: int
-
-
-# --- Event Elements ---
-class EventElement(IDSchema):
-    guild_id: int
-    event_id: int
-    element_type: ElementType
-    title: str | None = None
-    value: str | None = None
-
-
-class EventElementCreate(BaseSchema):
-    element_type: ElementType
-
-
-class EventElementUpdate(BaseSchema):
-    title: str | None = None
-    value: str | None = None
 
 
 # --- Event Posts ---

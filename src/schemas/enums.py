@@ -68,18 +68,6 @@ class VIPMessageTemplateType(FroggeEnum):
     Expiry = auto()
 
 
-class ElementType(FroggeEnum):
-    Address = auto()
-    Theme = auto()
-    Syncshell = auto()
-    PartyFinder = auto()
-    ShoutRun = auto()
-    Greeting = auto()
-    VenueShout = auto()
-    DJInfo = auto()
-    Miscellaneous = auto()
-
-
 class Race(FroggeEnum):
     Aura = auto()
     Elezen = auto()
@@ -186,3 +174,61 @@ class ApprovalStatus(FroggeEnum):
     PendingApproval = auto()
     Approved = auto()
     Rejected = auto()
+
+
+class CardRarity(FroggeEnum):
+    Common = auto()
+    Uncommon = auto()
+    Rare = auto()
+    UltraRare = auto()
+    Legendary = auto()
+
+    @classmethod
+    def _proper_name_overrides(cls) -> dict[str, str]:
+        return {"UltraRare": "Ultra Rare"}
+
+    @property
+    def rank(self) -> int:
+        """Ordinal position (0=Common..4=Legendary) for sorting/threshold comparisons - members
+        aren't int-valued the way an IntEnum would be, so this is the explicit ordering hook."""
+        return list(CardRarity).index(self)
+
+    @property
+    def accent_color(self) -> int:
+        """Plain int hex - Schemas has zero framework dependencies beyond Pydantic. Bot-side
+        code wraps this in discord.Colour(...) at render time."""
+        return {
+            CardRarity.Common: 0x808080,
+            CardRarity.Uncommon: 0x00FF00,
+            CardRarity.Rare: 0x0000FF,
+            CardRarity.UltraRare: 0x800080,
+            CardRarity.Legendary: 0xFFA500,
+        }[self]
+
+    @property
+    def icon(self) -> str:
+        return {
+            CardRarity.Common: "⚪",
+            CardRarity.Uncommon: "🟢",
+            CardRarity.Rare: "🔵",
+            CardRarity.UltraRare: "🟣",
+            CardRarity.Legendary: "🟠",
+        }[self]
+
+
+class ComparableStat(FroggeEnum):
+    """The 3 stats a Cards battle round can reveal for comparison (Phase 3). FLAW is
+    deliberately not a member here - it's checked separately every round, never the revealed
+    comparison stat."""
+    Charm = auto()
+    Wit = auto()
+    Presence = auto()
+
+
+class CardArrangement(FroggeEnum):
+    """A curated, fixed set of card-art layouts a venue picks from per series - not a fully
+    free-form per-venue coordinate system. The compositor always draws at the same pixel zones
+    for a given arrangement, regardless of whose frame art is used."""
+    ClassicBanner = auto()
+    FullBleedScrim = auto()
+    SidePanel = auto()

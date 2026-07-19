@@ -30,6 +30,7 @@ class GuildConfiguration(BaseSchema):
     change_name: bool = True
     staff_role_id: int | None = None
     require_staffing_qualification: bool = False
+    card_game_enabled: bool = False
 
     @field_validator("timezone")
     @classmethod
@@ -49,6 +50,7 @@ class GuildConfigurationUpdate(BaseSchema):
     change_name: bool | None = None
     staff_role_id: int | None = None
     require_staffing_qualification: bool | None = None
+    card_game_enabled: bool | None = None
 
     @field_validator("timezone")
     @classmethod
