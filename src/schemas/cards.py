@@ -9,7 +9,6 @@ from .enums import ApprovalStatus, CardArrangement, CardRarity
 
 __all__ = [
     "Card",
-    "CardArtGenerateRequest",
     "CardBoosterClaimResult",
     "CardBoosterOpenResult",
     "CardBreakdownRarity",
@@ -31,7 +30,6 @@ __all__ = [
     "CardSeries",
     "CardSeriesApproveRequest",
     "CardSeriesCreate",
-    "CardSeriesFrameSet",
     "CardSeriesRejectRequest",
     "CardSeriesUpdate",
     "CardUpdate",
@@ -132,11 +130,6 @@ class CardSeriesRejectRequest(BaseSchema):
     reason: str
 
 
-class CardSeriesFrameSet(BaseSchema):
-    raw_frame_url: str
-    arrangement: CardArrangement
-
-
 class Card(IDSchema):
     guild_id: int
     series_id: int
@@ -179,11 +172,6 @@ class CardUpdate(BaseSchema):
     flaw: int | None = Field(default=None, ge=1)
     is_active: bool | None = None
     is_nsfw: bool | None = None
-
-
-class CardArtGenerateRequest(BaseSchema):
-    raw_image_url: str
-    arrangement: CardArrangement | None = None
 
 
 # --- Keyed by Discord user_id only, no guild_id ----------------------------------------------

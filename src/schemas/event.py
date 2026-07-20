@@ -14,6 +14,8 @@ __all__ = [
     "EventPositionCreate",
     "EventPost",
     "EventPostCreate",
+    "EventRescheduleRequest",
+    "EventRescheduleResult",
     "EventShift",
     "EventShiftCreate",
     "EventShiftUpdate",
@@ -51,6 +53,17 @@ class EventUpdate(BaseSchema):
     start_at: datetime | None = None
     end_at: datetime | None = None
     image_url: str | None = None
+
+
+class EventRescheduleRequest(BaseSchema):
+    start_at: datetime
+    end_at: datetime | None = None
+    move_shifts: bool = False
+
+
+class EventRescheduleResult(BaseSchema):
+    event: Event
+    shifts_moved: int
 
 
 # --- Event Signups ---

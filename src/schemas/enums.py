@@ -176,6 +176,13 @@ class ApprovalStatus(FroggeEnum):
     Rejected = auto()
 
 
+class FormQuestionType(FroggeEnum):
+    ShortText = auto()
+    LongText = auto()
+    SingleSelect = auto()
+    MultiSelect = auto()
+
+
 class ReactionRoleMessageType(FroggeEnum):
     Normal = auto()
     Unique = auto()
@@ -246,3 +253,30 @@ class CardArrangement(FroggeEnum):
     ClassicBanner = auto()
     FullBleedScrim = auto()
     SidePanel = auto()
+
+
+class FinanceCurrency(FroggeEnum):
+    """The two never-mixed Finance ledgers - see Schemas/src/schemas/finance.py."""
+    RealMoney = auto()
+    Gil = auto()
+
+    @classmethod
+    def _proper_name_overrides(cls) -> dict[str, str]:
+        return {"RealMoney": "Real Money"}
+
+
+class FinanceEntryType(FroggeEnum):
+    Revenue = auto()
+    Expense = auto()
+    Payout = auto()
+
+
+class FinancePayoutStatus(FroggeEnum):
+    Pending = auto()
+    Paid = auto()
+
+
+class TournamentStatus(FroggeEnum):
+    SignupsOpen = auto()
+    InProgress = auto()
+    Completed = auto()

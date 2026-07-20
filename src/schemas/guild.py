@@ -67,12 +67,29 @@ class GuildSubscription(BaseSchema):
     granted_by: int | None = None
     note: str | None = None
 
+class GuildSubscriptionGrantRequest(BaseSchema):
+    tier: str
+    status: str = "active"
+    expires_at: datetime | None = None
+    granted_by: int
+    note: str | None = None
+
 class Guild(BaseSchema):
     guild_id: int
     name: str
     created_at: datetime
     configuration: GuildConfiguration
     subscription: GuildSubscription
+
+class GuildWelcomePost(BaseSchema):
+    guild_id: int
+    channel_id: int
+    message_id: int
+    posted_at: datetime
+
+class GuildWelcomePostUpsert(BaseSchema):
+    channel_id: int
+    message_id: int
 
 class GuildWarningThreshold(BaseSchema):
     guild_id: int
