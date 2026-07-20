@@ -7,6 +7,7 @@ from .enums import TournamentStatus
 
 __all__ = [
     "Tournament",
+    "TournamentBracketImageRequest",
     "TournamentCreate",
     "TournamentEntrant",
     "TournamentEntrantCreate",
@@ -30,6 +31,7 @@ class Tournament(IDSchema):
     message_id: int | None = None
     bracket_generated_at: datetime | None = None
     winner_entrant_id: int | None = None
+    bracket_image_url: str | None = None
 
 
 class TournamentCreate(BaseSchema):
@@ -72,3 +74,10 @@ class TournamentMatch(IDSchema):
 
 class TournamentMatchResultReport(BaseSchema):
     winner_entrant_id: int
+
+
+class TournamentBracketImageRequest(BaseSchema):
+    # Keyed by entrant *id* (matching TournamentMatch.entrant_a_id/entrant_b_id's own reference,
+    # not discord_user_id) - the API has no Discord client of its own to resolve display names,
+    # so the caller (the Bot, which already resolves names for its own post text) supplies them.
+    entrant_names: dict[int, str]

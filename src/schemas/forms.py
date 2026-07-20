@@ -57,6 +57,7 @@ class Form(IDSchema):
     color: int | None = None
     button_label: str = "Fill Out"
     button_emoji: str | None = None
+    allow_multiple_responses: bool = False
 
 
 class FormCreate(BaseSchema):
@@ -74,6 +75,7 @@ class FormUpdate(BaseSchema):
     color: int | None = None
     button_label: str | None = None
     button_emoji: str | None = None
+    allow_multiple_responses: bool | None = None
 
 
 # --- Form Responses ---

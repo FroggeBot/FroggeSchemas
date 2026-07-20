@@ -11,22 +11,31 @@ __all__ = [
     "Card",
     "CardBoosterClaimResult",
     "CardBoosterOpenResult",
+    "CardBoosterSlot",
+    "CardBoosterSlotCreate",
+    "CardBoosterSlotUpdate",
     "CardBreakdownRarity",
+    "CardBreakdownRaritySet",
     "CardBreakdownRarityUpdate",
     "CardCollection",
     "CardCraftRequest",
     "CardCraftResult",
     "CardCraftingRecipe",
+    "CardCraftingRecipeSet",
     "CardCraftingRecipeUpdate",
     "CardCreate",
     "CardDailyRewardTier",
+    "CardDailyRewardTierCreate",
     "CardDailyRewardTierUpdate",
     "CardDismantleResult",
     "CardEconomyConfig",
     "CardEconomyConfigUpdate",
     "CardOwnership",
     "CardRarityStatBand",
+    "CardRarityStatBandSet",
     "CardRarityStatBandUpdate",
+    "CardRarityWeight",
+    "CardRarityWeightCreate",
     "CardSeries",
     "CardSeriesApproveRequest",
     "CardSeriesCreate",
@@ -60,6 +69,14 @@ class CardCraftingRecipeUpdate(BaseSchema):
     shard_cost: int | None = Field(default=None, ge=0)
 
 
+class CardCraftingRecipeSet(BaseSchema):
+    """Required-fields counterpart to CardCraftingRecipeUpdate, used by the upsert-by-rarity
+    endpoint (PUT .../card-crafting-recipes/{rarity}) - the Dashboard always renders a fixed row
+    per rarity, so create-vs-update is an API-side implementation detail, not a UI choice."""
+
+    shard_cost: int = Field(ge=0)
+
+
 class CardBreakdownRarity(IDSchema):
     rarity: CardRarity
     shard_yield: int
@@ -69,10 +86,20 @@ class CardBreakdownRarityUpdate(BaseSchema):
     shard_yield: int | None = Field(default=None, ge=0)
 
 
+class CardBreakdownRaritySet(BaseSchema):
+    shard_yield: int = Field(ge=0)
+
+
 class CardDailyRewardTier(IDSchema):
     streak: int
     boosters: int = 0
     shards: int = 0
+
+
+class CardDailyRewardTierCreate(BaseSchema):
+    streak: int = Field(ge=1)
+    boosters: int = Field(default=0, ge=0)
+    shards: int = Field(default=0, ge=0)
 
 
 class CardDailyRewardTierUpdate(BaseSchema):
@@ -91,6 +118,38 @@ class CardRarityStatBandUpdate(BaseSchema):
     total_budget: int | None = Field(default=None, ge=1)
     min_per_stat: int | None = Field(default=None, ge=1)
     max_per_stat: int | None = Field(default=None, ge=1)
+
+
+class CardRarityStatBandSet(BaseSchema):
+    total_budget: int = Field(ge=1)
+    min_per_stat: int = Field(ge=1)
+    max_per_stat: int = Field(ge=1)
+
+
+class CardRarityWeight(IDSchema):
+    rarity: CardRarity
+    weight: int
+
+
+class CardRarityWeightCreate(BaseSchema):
+    rarity: CardRarity
+    weight: int = Field(ge=1)
+
+
+class CardBoosterSlot(IDSchema):
+    sort_order: int
+    always_new: bool = False
+    weights: list[CardRarityWeight] = []
+
+
+class CardBoosterSlotCreate(BaseSchema):
+    sort_order: int = 0
+    always_new: bool = False
+
+
+class CardBoosterSlotUpdate(BaseSchema):
+    sort_order: int | None = None
+    always_new: bool | None = None
 
 
 # --- Carry guild_id for provenance, reuse ApprovalStatus -------------------------------------
