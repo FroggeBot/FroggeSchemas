@@ -52,12 +52,16 @@ class CardEconomyConfig(IDSchema):
     shard_booster_cost: int = 100
     daily_reward_fallback_min: int = 1
     daily_reward_fallback_max: int = 2
+    vote_reward_shards: int = 20
+    vote_reward_weekend_multiplier: int = 2
 
 
 class CardEconomyConfigUpdate(BaseSchema):
     shard_booster_cost: int | None = Field(default=None, ge=1)
     daily_reward_fallback_min: int | None = Field(default=None, ge=0)
     daily_reward_fallback_max: int | None = Field(default=None, ge=0)
+    vote_reward_shards: int | None = Field(default=None, ge=0)
+    vote_reward_weekend_multiplier: int | None = Field(default=None, ge=1)
 
 
 class CardCraftingRecipe(IDSchema):
@@ -242,6 +246,7 @@ class CardCollection(BaseSchema):
     shards: int = 0
     streak: int = 0
     last_claimed_date: date | None = None
+    last_voted_date: date | None = None
 
 
 class CardOwnership(IDSchema):
