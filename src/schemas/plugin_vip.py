@@ -20,3 +20,32 @@ class PluginVIPHistoryPeriod(BaseSchema):
 class PluginVIPPerkStatus(BaseSchema):
     text: str
     redemption_status: str
+
+class PluginVipTierSummary(BaseSchema):
+    id: int
+    name: str
+    cost: int
+
+class PluginVipMemberSummary(BaseSchema):
+    id: int
+    discord_user_id: int
+    display_name: str
+    tier_name: str
+    expires_at: datetime | None = None
+
+class PluginVipMemberDetail(BaseSchema):
+    id: int
+    discord_user_id: int
+    display_name: str
+    tier_id: int
+    tier_name: str
+    expires_at: datetime | None = None
+    notes: str | None = None
+
+class PluginVipAssignRequest(BaseSchema):
+    discord_user_id: int
+    tier_id: int
+
+class PluginResolveCharacterResponse(BaseSchema):
+    discord_user_id: int
+    character_name: str
