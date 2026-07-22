@@ -14,6 +14,7 @@ __all__ = [
     "GiveawayPostUpsert",
     "GiveawayRollResult",
     "GiveawayUpdate",
+    "PendingGiveawayFinalization",
 ]
 
 
@@ -72,3 +73,8 @@ class GiveawayEntryCreate(BaseSchema):
 
 class GiveawayRollResult(BaseSchema):
     winners: list[int]
+
+
+class PendingGiveawayFinalization(IDSchema):
+    guild_id: int
+    giveaway_id: int

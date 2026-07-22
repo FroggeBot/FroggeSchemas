@@ -17,3 +17,15 @@ class PluginGiveawaySummary(IDSchema):
     is_winner: bool
     winner_count: int
     discord_link: str | None = None
+
+
+class PluginManageGiveawaySummary(IDSchema):
+    guild_id: int
+    name: str | None = None
+    prize: str | None = None
+    end_at: datetime | None = None
+    entrant_count: int
+    is_rolled: bool
+    rolled_at: datetime | None = None
+    winner_ids: list[int] = []
+    discord_link: str | None = None

@@ -98,3 +98,7 @@ class GuildWarningThreshold(BaseSchema):
 class GuildLockoutThreshold(BaseSchema):
     guild_id: int
     event_lockout_minutes: int | None
+
+class GuildLogChannelId(BaseSchema):
+    guild_id: int
+    log_channel_id: int | None
