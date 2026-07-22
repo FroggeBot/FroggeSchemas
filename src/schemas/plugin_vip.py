@@ -45,7 +45,3 @@ class PluginVipMemberDetail(BaseSchema):
 class PluginVipAssignRequest(BaseSchema):
     discord_user_id: int
     tier_id: int
-
-class PluginResolveCharacterResponse(BaseSchema):
-    discord_user_id: int
-    character_name: str

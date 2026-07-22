@@ -7,6 +7,7 @@ from pydantic import Field
 from .base import BaseSchema, IDSchema
 
 __all__ = [
+    "PendingRaffleFinalization",
     "Raffle",
     "RaffleCreate",
     "RaffleEntry",
@@ -63,3 +64,8 @@ class RaffleEntryCredit(BaseSchema):
 
 class RaffleRollResult(BaseSchema):
     winners: list[int]
+
+
+class PendingRaffleFinalization(IDSchema):
+    guild_id: int
+    raffle_id: int
