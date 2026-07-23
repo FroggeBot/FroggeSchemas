@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from pydantic import Field
+
 from .base import BaseSchema, IDSchema
 from .enums import ReactionRoleMessageType
 from .routing import Route
@@ -16,6 +18,12 @@ __all__ = [
     "ReactionRolePanelPostRequest",
     "ReactionRolePanelPostRequestCreate",
     "ReactionRolePanelUpdate",
+    "ReactionRoleTemplate",
+    "ReactionRoleTemplateCreate",
+    "ReactionRoleTemplateOption",
+    "ReactionRoleTemplateOptionCreate",
+    "ReactionRoleTemplateOptionUpdate",
+    "ReactionRoleTemplateUpdate",
 ]
 
 # The actual per-click role grant/remove handler, dispatched from the live posted message itself -
@@ -93,3 +101,53 @@ class ReactionRolePanelPostRequest(IDSchema):
 
 class ReactionRolePanelPostRequestCreate(BaseSchema):
     channel_id: int
+
+
+# --- Reaction Role Templates ---
+# A platform-admin-owned, guild-agnostic catalog (no guild_id) - applying one always creates fresh
+# Discord roles/panel/options in the target guild, so the template row itself never references any
+# guild-specific ID. Ported from Bot's previously-hardcoded TEMPLATES list
+# (bot/cogs/reaction_roles/templates.py) so the Dashboard can manage the same catalog Discord reads.
+class ReactionRoleTemplateOption(IDSchema):
+    template_id: int
+    name: str
+    color: int
+    emoji: str | None = None
+
+
+class ReactionRoleTemplateOptionCreate(BaseSchema):
+    name: str
+    color: int
+    emoji: str | None = None
+
+
+class ReactionRoleTemplateOptionUpdate(BaseSchema):
+    name: str | None = None
+    color: int | None = None
+    emoji: str | None = None
+
+
+class ReactionRoleTemplate(IDSchema):
+    name: str
+    title: str
+    description: str | None = None
+    message_type: ReactionRoleMessageType = ReactionRoleMessageType.Normal
+    options: list[ReactionRoleTemplateOption] = []
+
+
+class ReactionRoleTemplateCreate(BaseSchema):
+    name: str
+    title: str
+    description: str | None = None
+    message_type: ReactionRoleMessageType = ReactionRoleMessageType.Normal
+    # Cap matches ReactionRoleOptionService.MAX_OPTIONS - applying a template creates exactly that
+    # many panel options, so it's a real downstream constraint, just enforced here since a template
+    # submits its whole option list in one payload rather than one-at-a-time like a live panel does.
+    options: list[ReactionRoleTemplateOptionCreate] = Field(default_factory=list, max_length=20)
+
+
+class ReactionRoleTemplateUpdate(BaseSchema):
+    name: str | None = None
+    title: str | None = None
+    description: str | None = None
+    message_type: ReactionRoleMessageType | None = None
